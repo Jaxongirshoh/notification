@@ -33,7 +33,15 @@ public class NotificationService {
         log.info("Preparing notification table for users is completed in {} ms", (end - start));
     }
 
+    @Transactional
     public void prepareNotificationTableV2(){
+        LocalDate monthAgo = LocalDate.now().minusMonths(1);
+        log.info("Preparing notification table for users");
+        long start = System.currentTimeMillis();
+        notificationRepository.truncateNotificationTable();
 
+        notificationRepository.insertNotifications(monthAgo);
+        long end = System.currentTimeMillis();
+        log.info("Preparing notification table for users is completed in {} ms", (end - start));
     }
 }

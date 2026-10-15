@@ -37,4 +37,22 @@ public interface TempNotificationRepository extends JpaRepository<TempNotificati
           )
         """, nativeQuery = true)
     void insertFreshNotifications(@Param("oneMonthAgo") LocalDate monthAgo);
+
+    @Modifying
+    @Query(value = "TRUNCATE TABLE temp_notification RESTART IDENTITY", nativeQuery = true)
+    void truncateNotificationTable();
+
+    @Modifying
+    @Query(value = """
+        INSERT INTO temp_notification (user_id, user_lang, is_sent, is_success)
+        SELECT DISTINCT
+            up.id,
+            COALESCE(up.lang, 'UZ'),
+            false,
+            false
+        FROM user_profile up
+        INNER JOIN user_access ua ON up.id = ua.user_id
+        WHERE ua.access_token_expire >= :oneMonthAgo
+        """, nativeQuery = true)
+    void insertNotifications(@Param("oneMonthAgo") LocalDate oneMonthAgo);
 }

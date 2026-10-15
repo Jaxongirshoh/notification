@@ -16,6 +16,12 @@ public class NotificationController {
     @GetMapping("/prepare")
     public String sendNotification() {
         notificationService.prepareNotificationTableV1();
-        return "Preparing process is started!";
+        return "Preparing process is completed!";
+    }
+
+    @GetMapping("/prepare-v2")
+    public String sendNotificationV2() {
+        notificationService.prepareNotificationTableV2();
+        return "Preparing process is completed!";
     }
 }
