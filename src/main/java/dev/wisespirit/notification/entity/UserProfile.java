@@ -18,5 +18,6 @@ public class UserProfile {
     private Long id;
     private String name;
     private String phoneNumber;
+    @Enumerated(EnumType.STRING)
     private Language lang;
 }

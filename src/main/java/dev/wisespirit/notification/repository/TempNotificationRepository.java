@@ -4,6 +4,7 @@ import dev.wisespirit.notification.entity.TempNotification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
 
@@ -19,7 +20,7 @@ public interface TempNotificationRepository extends JpaRepository<TempNotificati
               AND ua.access_token_expire >= :oneMonthAgo
         )
         """, nativeQuery = true)
-    void deleteDatedNotification(LocalDate monthAgo);
+    void deleteDatedNotification(@Param("oneMonthAgo") LocalDate monthAgo);
 
 
     @Modifying
@@ -35,5 +36,5 @@ public interface TempNotificationRepository extends JpaRepository<TempNotificati
               WHERE tn.user_id = up.id
           )
         """, nativeQuery = true)
-    void insertFreshNotifications(LocalDate monthAgo);
+    void insertFreshNotifications(@Param("oneMonthAgo") LocalDate monthAgo);
 }
